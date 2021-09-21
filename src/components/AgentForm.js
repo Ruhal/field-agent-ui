@@ -58,11 +58,15 @@ function AgentForm({setAgents, agents}){
         }
     }
 
+    // minimum date of birth calculated, agent needs to be at least 12 years old
+    var date2 = new Date();
+    date2.setFullYear(date2.getFullYear() - 12);
+
+
     return(
         <>  
 
             <div className="container">
-
             <br />
                 <div className="jumbotron">
                     <h1>{isDelete !== 1 && (agent ? "Update information for Agent "+agent.agentId : "Add an agent to the database")}{isDelete === 1  && "Are you sure you want to delete Agent "+agent.agentId+" from the database? "}</h1>
@@ -78,7 +82,7 @@ function AgentForm({setAgents, agents}){
                             First Name
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control name="firstName" type="text" defaultValue={agent?.firstName} disabled={isDelete? true : false}/>
+                            <Form.Control name="firstName" type="text" defaultValue={agent?.firstName} required disabled={isDelete? true : false}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
@@ -94,7 +98,7 @@ function AgentForm({setAgents, agents}){
                             Last Name
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control type="text" defaultValue={agent?.lastName} name="lastName"  disabled={isDelete? true : false}/>
+                            <Form.Control type="text" defaultValue={agent?.lastName} name="lastName"  required disabled={isDelete? true : false}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
@@ -102,7 +106,7 @@ function AgentForm({setAgents, agents}){
                             Date of birth
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control className="date1" type="date" name="dob" defaultValue={agent?.dob} disabled={isDelete? true : false}/>
+                            <Form.Control className="date1" type="date" name="dob" defaultValue={agent?.dob} max={date2.toISOString().split('T')[0]} required disabled={isDelete? true : false}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
@@ -110,7 +114,7 @@ function AgentForm({setAgents, agents}){
                                 Height in Inches
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control type="number" defaultValue={agent?.heightInInches} name="heightInInches"  disabled={isDelete? true : false} />
+                            <Form.Control type="number" defaultValue={agent?.heightInInches} name="heightInInches"  required min={36} max={96} disabled={isDelete? true : false} />
                             </Col>
                         </Form.Group>
 
