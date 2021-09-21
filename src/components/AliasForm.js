@@ -69,7 +69,7 @@ function AliasForm({setAlias, aliases, agentId}){
 
             <br />
                 <div className="jumbotron">
-                    <h1>{isDelete !== 1 && (alias ? "Update information for Alias "+alias.aliasId : "Add an alias to the database")}{isDelete === 1  && "Are you sure you want to delete Alias "+alias.aliasId+" from the database? "}</h1>
+                    <h1>{isDelete !== 1 && (alias ? "Update information for Alias "+alias.aliasId : "Add an Alias to the database using a valid Agent ID")}{isDelete === 1  && "Are you sure you want to delete Alias "+alias.aliasId+" from the database? "}</h1>
 
                 </div>        
 
