@@ -82,7 +82,7 @@ function AliasForm({setAlias, aliases, agentId}){
                             Name
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control name="name" type="text" defaultValue={alias?.name} disabled={isDelete? true : false}/>
+                            <Form.Control name="name" type="text" defaultValue={alias?.name} required disabled={isDelete? true : false}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
@@ -98,7 +98,7 @@ function AliasForm({setAlias, aliases, agentId}){
                                 Agent ID
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control type="number" defaultValue={alias?.agentId} name="agentId"  disabled={isDelete? true : false} />
+                            <Form.Control type="number" defaultValue={alias?.agentId} name="agentId"  required disabled={isDelete? true : false} />
                             </Col>
                         </Form.Group>
 
