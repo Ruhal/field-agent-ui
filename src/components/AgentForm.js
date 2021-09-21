@@ -1,6 +1,6 @@
 import {Link, useLocation, useHistory } from "react-router-dom";
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { AgentAdd, AgentdeleteById, AgentUpdate,  } from "../services/api";
+import { Add, DeleteById, Update,  } from "../services/api";
 
 
 function AgentForm({setAgents, agents}){
@@ -12,7 +12,7 @@ function AgentForm({setAgents, agents}){
     function handleSubmit(e) {
         e.preventDefault();
         if(isDelete === 1){
-            AgentdeleteById(agent.agentId).then(response => {
+            DeleteById({table: "/agent/", Id: agent.agentId}).then(response => {
                 if(response === true){
                     setAgents(agents.filter(s => s.agentId !== agent.agentId));
                     history.push('/agents');
@@ -26,7 +26,7 @@ function AgentForm({setAgents, agents}){
         } else {
             const newAgent = Object.fromEntries(new FormData(e.target));
             location.state
-                        ? AgentUpdate({...newAgent, agentId: agent.agentId}).then(response => {
+                        ? Update({new: {...newAgent, agentId: agent.agentId}, table: "/agent/", Id: agent.agentId}).then(response => {
                             console.log(response);
                             if(response === true){
                                 let nextList = agents ;
@@ -41,7 +41,7 @@ function AgentForm({setAgents, agents}){
                                 console.log(error);
                                 alert(error);
                             })                         
-                        : AgentAdd(newAgent).then(response => {
+                        : Add({new: newAgent, table: "/agent/"}).then(response => {
                             console.log(response);
                             if(response === true){
                                 const nextId = Math.max(...agents.map(m => m.agentId),0)+1;

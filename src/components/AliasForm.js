@@ -1,9 +1,9 @@
 import {Link, useLocation, useHistory } from "react-router-dom";
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { AgentAdd, AgentdeleteById, AgentUpdate,  } from "../services/api";
+import { Add, DeleteById, Update,  } from "../services/api";
 
 
-function AliasForm({setAlias, alias}){
+function AliasForm({setAlias, aliases, agentId}){
     const location = useLocation();
     const alias = location.state ? location.state.alias : null;
     const isDelete = location.state && location.state.isDelete ? location.state.isDelete : null;
@@ -12,9 +12,9 @@ function AliasForm({setAlias, alias}){
     function handleSubmit(e) {
         e.preventDefault();
         if(isDelete === 1){
-            AgentdeleteById(alias.aliasId).then(response => {
+            DeleteById({table: "/alias/", Id: alias.aliasId}).then(response => {
                 if(response === true){
-                    setAlias(alias.filter(s => s.aliasId !== agent.aliasId));
+                    setAlias(aliases.filter(s => s.aliasId !== alias.aliasId));
                     history.push('/alias');
                 } else {
                     alert('Delete failed.');
@@ -26,12 +26,14 @@ function AliasForm({setAlias, alias}){
         } else {
             const newAlias = Object.fromEntries(new FormData(e.target));
             location.state
-                        ? AgentUpdate({...newAlias, aliasId: agent.aliasId}).then(response => {
+                        ? Update({new: {...newAlias, aliasId: alias.aliasId}, table: "/alias/", Id: alias.aliasId}).then(response => {
                             console.log(response);
                             if(response === true){
-                                let nextList = alias ;
-                                nextList[alias.indexOf(agent)] = {...newAlias, aliasId: agent.aliasId};
-                                setAlias(nextList);
+                                if(newAlias.agentId === agentId) {
+                                    let nextList = aliases ;
+                                    nextList[aliases.indexOf(alias)] = {...newAlias, aliasId: alias.aliasId};
+                                    setAlias(nextList);
+                                }
                                 history.push('/alias');
                             } else {
                                 alert('Update failed.');
@@ -41,11 +43,13 @@ function AliasForm({setAlias, alias}){
                                 console.log(error);
                                 alert(error);
                             })                         
-                        : AgentAdd(newAgent).then(response => {
+                        : Add({new: newAlias, table: "/alias/"}).then(response => {
                             console.log(response);
                             if(response === true){
-                                const nextId = Math.max(...alias.map(m => m.aliasId),0)+1;
-                                setAlias([...alias, {...newAlias, aliasId: nextId}]);
+                                if(newAlias.agentId === agentId) {
+                                    const nextId = Math.max(...aliases.map(m => m.aliasId),0)+1;
+                                    setAlias([...aliases, {...newAlias, aliasId: nextId}]);
+                                }                                
                                 history.push('/alias');
                             } else {
                                 alert('Add failed.');
@@ -65,7 +69,7 @@ function AliasForm({setAlias, alias}){
 
             <br />
                 <div className="jumbotron">
-                    <h1>{isDelete !== 1 && (agent ? "Update information for Agent "+agent.aliasId : "Add an agent to the database")}{isDelete === 1  && "Are you sure you want to delete Agent "+agent.aliasId+" from the database? "}</h1>
+                    <h1>{isDelete !== 1 && (alias ? "Update information for Alias "+alias.aliasId : "Add an alias to the database")}{isDelete === 1  && "Are you sure you want to delete Alias "+alias.aliasId+" from the database? "}</h1>
 
                 </div>        
 
@@ -75,42 +79,26 @@ function AliasForm({setAlias, alias}){
                     <Form onSubmit={(e) => { handleSubmit(e)}} >
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
                             <Form.Label column sm={2} >
-                            First Name
+                            Name
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control name="firstName" type="text" defaultValue={alias?.firstName} disabled={isDelete? true : false}/>
+                            <Form.Control name="name" type="text" defaultValue={alias?.name} disabled={isDelete? true : false}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
                             <Form.Label column sm={2}>
-                            Middle Name
+                            Persona
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control type="text" name="middleName" defaultValue={alias?.middleName} disabled={isDelete? true : false}/>
+                            <Form.Control type="text" name="persona" defaultValue={alias?.persona} disabled={isDelete? true : false}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
                             <Form.Label column sm={2}>
-                            Last Name
+                                Agent ID
                             </Form.Label>
                             <Col sm={3}>
-                            <Form.Control type="text" defaultValue={alias?.lastName} name="lastName"  disabled={isDelete? true : false}/>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
-                            <Form.Label column sm={2}>
-                            Date of birth
-                            </Form.Label>
-                            <Col sm={3}>
-                            <Form.Control className="date1" type="date" name="dob" defaultValue={alias?.dob} disabled={isDelete? true : false}/>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalText" >
-                            <Form.Label column sm={2}>
-                                Height in Inches
-                            </Form.Label>
-                            <Col sm={3}>
-                            <Form.Control type="number" defaultValue={alias?.heightInInches} name="heightInInches"  disabled={isDelete? true : false} />
+                            <Form.Control type="number" defaultValue={alias?.agentId} name="agentId"  disabled={isDelete? true : false} />
                             </Col>
                         </Form.Group>
 
@@ -118,7 +106,7 @@ function AliasForm({setAlias, alias}){
                         <Form.Group as={Row} className="mb-3">
                             <Col sm={{ span: 10, offset: 2 }}>
                                 
-                            <Button type="submit" value="Submit" className="btn2" >{agent ? (isDelete !== 1 && "Update") || (isDelete === 1 && "Delete") : "Add"}</Button>
+                            <Button type="submit" value="Submit" className="btn2" >{alias ? (isDelete !== 1 && "Update") || (isDelete === 1 && "Delete") : "Add"}</Button>
 
                             </Col>
                         </Form.Group>
@@ -142,4 +130,4 @@ function AliasForm({setAlias, alias}){
     
 }
 
-export default AgentForm;
+export default AliasForm;

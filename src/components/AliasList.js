@@ -7,7 +7,7 @@ import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { AliasFindByAgentId } from "../services/api";
 
 
-export default function AliasList({alias, setAlias}) {
+export default function AliasList({alias, setAlias, setAgentId}) {
 
     let match = useRouteMatch();
 
@@ -16,7 +16,8 @@ export default function AliasList({alias, setAlias}) {
         const newEntry = Object.fromEntries(new FormData(e.target));
         AliasFindByAgentId(newEntry.agentId).then(response => 
             {   
-                setAlias(response)
+                setAlias(response);
+                setAgentId(newEntry.agentId);
             })
             .catch(error => {
                 console.log(error);

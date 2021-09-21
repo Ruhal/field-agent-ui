@@ -20,8 +20,8 @@ export async function AgentFindById(agentId) {
     return response.json();
 }
 
-export async function AgentdeleteById(agentId) {
-    const response = await fetch(`${apiUrl}/agent/${agentId}`, { method: "DELETE" });
+export async function DeleteById(arr) {
+    const response = await fetch(`${apiUrl}${arr.table}${arr.Id}`, { method: "DELETE" });
 
     
     if (response.status !== 204) {
@@ -32,16 +32,16 @@ export async function AgentdeleteById(agentId) {
 
 }
 
-export async function AgentAdd(agent) {
+export async function Add(arr) {
     const init = {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
     },
-    body: JSON.stringify(agent),
+    body: JSON.stringify(arr.new),
     };
 
-    const response = await fetch(apiUrl+"/agent/", init);
+    const response = await fetch(apiUrl+arr.table, init);
 
     if (response.status !== 201) {
     return Promise.reject("Add failed, response not 201 CREATED");
@@ -51,17 +51,17 @@ export async function AgentAdd(agent) {
 }
 
 
-export async function AgentUpdate(agent) {
+export async function Update(arr) {
     const init = {
         method: "PUT",
         headers: {
         "Content-Type": "application/json",
     },
-        body: JSON.stringify(agent),
+        body: JSON.stringify(arr.new),
     };
 
     // PUT needs a todoId in the URL
-    const response = await fetch(`${apiUrl}/agent/${agent.agentId}`, init);
+    const response = await fetch(`${apiUrl}${arr.table}${arr.Id}`, init);
 
     if (response.status !== 204) {
         return Promise.reject("Updated failed, response not 204 NO CONTENT");
@@ -86,7 +86,42 @@ export async function AliasFindByAgentId(agentId) {
 }
 
 
+export async function AliasAdd(alias) {
+    const init = {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(alias),
+    };
 
+    const response = await fetch(apiUrl+"/alias", init);
+
+    if (response.status !== 201) {
+    return Promise.reject("Add failed, response not 201 CREATED");
+    }
+
+    return Promise.resolve(true);
+}
+
+export async function AliasUpdate(alias) {
+    const init = {
+        method: "PUT",
+        headers: {
+        "Content-Type": "application/json",
+    },
+        body: JSON.stringify(alias),
+    };
+
+    // PUT needs a todoId in the URL
+    const response = await fetch(`${apiUrl}/alias/${alias.aliasId}`, init);
+
+    if (response.status !== 204) {
+        return Promise.reject("Updated failed, response not 204 NO CONTENT");
+    }
+
+    return Promise.resolve(true);
+}
 
     
     // return the findAll promise.
