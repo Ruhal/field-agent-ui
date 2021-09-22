@@ -44,7 +44,7 @@ export async function Add(arr) {
     const response = await fetch(apiUrl+arr.table, init);
 
     if (response.status !== 201) {
-    return Promise.reject("Add failed, response not 201 CREATED");
+    return Promise.reject("Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return Promise.resolve(true);
