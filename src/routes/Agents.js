@@ -3,14 +3,14 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import AgentList from "../components/AgentList";
 import AgentForm from "../components/AgentForm";
 import NotFound from "../components/NotFound";
-import {AgentfindAll,  } from "../services/api";
+import {findAll,  } from "../services/api";
 
 export default function Agents() {
     const [agents, setAgents] = useState([]);
 
     //this loads agents once on start up
     useEffect(() => {
-        AgentfindAll().then((data) => setAgents(data));
+        findAll("agent").then((data) => setAgents(data));
     }, []); 
 
     let { path } = useRouteMatch();

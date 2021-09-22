@@ -1,10 +1,10 @@
 const apiUrl = "http://localhost:8080/api";
 
-export async function AgentfindAll() {
-    const response = await fetch(apiUrl+"/agent");
+export async function findAll(str) {
+    const response = await fetch(apiUrl+"/"+str);
 
     if (response.status !== 200) {
-        return Promise.reject("Agent fetch failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
+        return Promise.reject(str+" fetch failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return response.json();
@@ -25,7 +25,7 @@ export async function DeleteById(arr) {
 
     
     if (response.status !== 204) {
-        return Promise.reject("Deleted failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
+        return Promise.reject("Delete failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return Promise.resolve(true);
