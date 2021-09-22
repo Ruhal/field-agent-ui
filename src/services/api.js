@@ -4,7 +4,7 @@ export async function AgentfindAll() {
     const response = await fetch(apiUrl+"/agent");
 
     if (response.status !== 200) {
-        return Promise.reject("Agent fetch failed, response is not 200 OK");
+        return Promise.reject("Agent fetch failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return response.json();
@@ -14,7 +14,7 @@ export async function AgentFindById(agentId) {
     const response = await fetch(`${apiUrl}/agent/${agentId}`);
 
     if (response.status !== 200) {
-        return Promise.reject("response is not 200 OK");
+        return Promise.reject("Fetch failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return response.json();
@@ -25,7 +25,7 @@ export async function DeleteById(arr) {
 
     
     if (response.status !== 204) {
-        return Promise.reject("Deleted failed, response not 204 - NO CONTENT");
+        return Promise.reject("Deleted failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return Promise.resolve(true);
@@ -44,7 +44,7 @@ export async function Add(arr) {
     const response = await fetch(apiUrl+arr.table, init);
 
     if (response.status !== 201) {
-    return Promise.reject("Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
+    return Promise.reject("Add failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return Promise.resolve(true);
@@ -64,7 +64,7 @@ export async function Update(arr) {
     const response = await fetch(`${apiUrl}${arr.table}${arr.Id}`, init);
 
     if (response.status !== 204) {
-        return Promise.reject("Updated failed, response not 204 NO CONTENT");
+        return Promise.reject("Updated failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2));
     }
 
     return Promise.resolve(true);
@@ -79,51 +79,14 @@ export async function AliasFindByAgentId(agentId) {
     }
     if (response.status !== 200) {
 
-        return Promise.reject("Alias fetch failed")
+        return Promise.reject("Alias fetch failed, Error "+response.status+": "+(await response.text()).toString().slice(2,-2))
     }
     return response.json();
 
 }
 
 
-export async function AliasAdd(alias) {
-    const init = {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(alias),
-    };
 
-    const response = await fetch(apiUrl+"/alias", init);
-
-    if (response.status !== 201) {
-    return Promise.reject("Add failed, response not 201 CREATED");
-    }
-
-    return Promise.resolve(true);
-}
-
-export async function AliasUpdate(alias) {
-    const init = {
-        method: "PUT",
-        headers: {
-        "Content-Type": "application/json",
-    },
-        body: JSON.stringify(alias),
-    };
-
-    // PUT needs a todoId in the URL
-    const response = await fetch(`${apiUrl}/alias/${alias.aliasId}`, init);
-
-    if (response.status !== 204) {
-        return Promise.reject("Updated failed, response not 204 NO CONTENT");
-    }
-
-    return Promise.resolve(true);
-}
-
-    
     // return the findAll promise.
 
 
