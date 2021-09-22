@@ -66,7 +66,7 @@ export default function AliasList({alias, setAlias, setAgentId}) {
                                     <th>Actions</th>
                                 </tr>                        
                         </thead>
-                            <tbody>
+                        <tbody>
                             {alias.map(s => (
                                 <tr key={s.aliasId}>
                                     <td><center>{s.aliasId}</center></td>

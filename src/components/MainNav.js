@@ -12,6 +12,7 @@ export default function MainNav() {
               <Nav.Link as={Link} to="/" >Home</Nav.Link>
               <Nav.Link as={Link} to="/agents" >Agents </Nav.Link>
               <Nav.Link as={Link} to="/alias" >Alias</Nav.Link>
+              <Nav.Link as={Link} to="/securityclearance" >Security Clearances</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

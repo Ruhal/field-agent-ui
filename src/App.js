@@ -11,6 +11,9 @@ import AliasNav from './components/AliasNav';
 import Agents from './routes/Agents';
 import NotFound from './components/NotFound';
 import Alias from "./routes/Alias";
+import SecurityClearance from "./routes/SecurityClearance";
+import SecurityClearanceNav from "./components/SecurityClearanceNav";
+
 
 export default function App() {
     return (
@@ -22,10 +25,13 @@ export default function App() {
                     <AliasNav />
                     <Alias />
                     </Route>
-
                     <Route path="/agents">
                     <AgentsNav/>
                     <Agents />
+                    </Route>
+                    <Route path="/securityclearance">
+                    <SecurityClearanceNav />
+                    <SecurityClearance />
                     </Route>
                     <Route  exact path="/">
                     <Home />
