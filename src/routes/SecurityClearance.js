@@ -4,7 +4,6 @@ import SecurityClearanceList from "../components/SecurityClearanceList.js";
 // import SecurityClearanceForm from "../components/SecurityClearanceForm";
 import NotFound from "../components/NotFound";
 import {findAll,  } from "../services/api";
-import AgentList from "../components/AgentList";
 import SecurityClearanceForm from "../components/SecurityClearanceForm.js";
 
 export default function SecurityClearance() {
